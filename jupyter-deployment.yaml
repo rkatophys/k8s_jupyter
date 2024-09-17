@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyter-deployment
+  labels:
+    component: jupyter
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: jupyter
+  template:
+    metadata:
+      labels:
+        component: jupyter
+    spec:
+      containers:
+      - name: jupyter
+        image: jupyter/datascience-notebook
+        ports:
+        - containerPort: 8888
+          protocol: TCP
+          name: http
+        command: ["start-notebook.sh"]
+        args: ["--NotebookApp.token=''"]
+        # volumeMounts:
+        # - mountPath: /jupyter
+        #   name: jupyter
+
+      # volumes:
+      # - name: jupyter
+      #   persistentVolumeClaim:
+      #     claimName: jupyterclaim
